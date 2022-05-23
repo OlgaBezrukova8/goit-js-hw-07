@@ -37,13 +37,25 @@ function onSelectImage(event) {
     `<img class="gallery__modal" src="${event.target.dataset.source}">`
   );
 
+  // galleryModal.show(() => {
+  //   galleryContainer.addEventListener("keydown", (event) => {
+  //     if (event.code === "Escape") {
+  //       galleryModal.close();
+  //     }
+  //   });
+  // });
+
   galleryModal.show(() => {
-    galleryContainer.addEventListener("keydown", (event) => {
-      if (event.code === "Escape") {
-        galleryModal.close();
-      }
-    });
+    galleryContainer.addEventListener("keydown", openModalEscape);
   });
+
+  function openModalEscape(event) {
+    if (event.code === "Escape") {
+      galleryModal.close(() => {
+        galleryContainer.removeEventListener("keydown", openModalEscape);
+      });
+    }
+  }
 }
 
 console.log(galleryItems);
