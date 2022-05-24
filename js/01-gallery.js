@@ -34,8 +34,24 @@ function onSelectImage(event) {
   }
 
   const galleryModal = basicLightbox.create(
-    `<img class="gallery__modal" src="${event.target.dataset.source}">`
+    `<img class="gallery__modal" src="${event.target.dataset.source}">`,
+    {
+      onShow: () => {
+        window.addEventListener("keydown", closeModalEscape);
+      },
+      onClose: () => {
+        window.removeEventListener("keydown", closeModalEscape);
+      },
+    }
   );
+
+  galleryModal.show();
+
+  function closeModalEscape(event) {
+    if (event.code === "Escape") {
+      galleryModal.close();
+    }
+  }
 
   // galleryModal.show(() => {
   //   galleryContainer.addEventListener("keydown", (event) => {
@@ -45,17 +61,27 @@ function onSelectImage(event) {
   //   });
   // });
 
-  galleryModal.show(() => {
-    galleryContainer.addEventListener("keydown", openModalEscape);
-  });
+  //   galleryModal.show(() => {
+  //     // galleryContainer.addEventListener("keydown", closeModalEscape);
+  //   });
 
-  function openModalEscape(event) {
-    if (event.code === "Escape") {
-      galleryModal.close(() => {
-        galleryContainer.removeEventListener("keydown", openModalEscape);
-      });
-    }
-  }
+  //   function closeModalEvent() {
+  //     galleryModal.close(() => {
+  //        galleryContainer.removeEventListener("keydown", closeModalEscape);
+  //     });
+  //   }
+
+  //   function closeModalEscape(event) {
+  //     if (event.code === "Escape") {
+  //
+  //       // galleryModal.close(() => {
+  //       //   galleryContainer.removeEventListener("keydown", openModalEscape);
+  //       // });
+  //
+  //     }
+  //
+
+  //   }
 }
 
 console.log(galleryItems);
